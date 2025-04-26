@@ -1,0 +1,32 @@
+{
+  "exclude": ["./src/routeTree.gen.ts"],
+  "tasks": {
+    "dev": "deno run -A --node-modules-dir npm:vite",
+    "test": "deno run -A --node-modules-dir npm:vitest --run"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "imports": {
+    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
+    "@emotion/react": "npm:@emotion/react@^11.14.0",
+    "@emotion/styled": "npm:@emotion/styled@^11.14.0",
+    "@fontsource/roboto": "npm:@fontsource/roboto@^5.2.5",
+    "@mui/icons-material": "npm:@mui/icons-material@^7.0.2",
+    "@mui/material": "npm:@mui/material@^7.0.2",
+    "@tanstack/react-router": "npm:@tanstack/react-router@^1.117.1",
+    "@tanstack/react-router-devtools": "npm:@tanstack/react-router-devtools@^1.117.1",
+    "@tanstack/router-plugin": "npm:@tanstack/router-plugin@^1.117.2",
+    "@testing-library/dom": "npm:@testing-library/dom@^10.4.0",
+    "@testing-library/jest-dom": "npm:@testing-library/jest-dom@^6.6.3",
+    "@testing-library/react": "npm:@testing-library/react@^16.3.0",
+    "@vitejs/plugin-react": "npm:@vitejs/plugin-react@^4.4.1",
+    "jsdom": "npm:jsdom@^26.1.0",
+    "react": "npm:react@^19.1.0",
+    "react-dom": "npm:react-dom@^19.1.0",
+    "vite": "npm:vite@^6.3.3",
+    "vitest": "npm:vitest@^3.1.2",
+    "web-vitals": "npm:web-vitals@^4.2.4"
+  }
+}

@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  description: API for managing tasks in the Task Management System
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+paths:
+  /tasks:
+    get:
+      summary: Retrieve all tasks
+      description: Returns a list of all tasks in the system
+      operationId: getTasks
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new task
+      description: Creates a new task with the provided information
+      operationId: createTask
+      requestBody:
+        description: Task object that needs to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tasks/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the task
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Retrieve a task by ID
+      description: Returns a single task by its ID
+      operationId: getTaskById
+      responses:
+        '200':
+          description: Task found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/Task'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a task
+      description: Updates all fields of a task by its ID
+      operationId: updateTask
+      requestBody:
+        description: Task object with updated information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a task
+      description: Deletes a task by its ID
+      operationId: deleteTask
+      responses:
+        '204':
+          description: Task deleted successfully
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the task
+        title:
+          type: string
+          description: Title of the task
+        description:
+          type: string
+          nullable: true
+          description: Optional description of the task
+        status:
+          type: string
+          description: Current status of the task
+        due_date:
+          type: string
+          format: date-time
+          description: Due date of the task
+      required:
+        - id
+        - title
+        - status
+        - due_date
+    TaskCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the task
+        description:
+          type: string
+          nullable: true
+          description: Optional description of the task
+        status:
+          type: string
+          description: Status of the task
+        due_date:
+          type: string
+          format: date-time
+          description: Due date of the task
+      required:
+        - title
+        - status
+        - due_date
+    TaskStatusUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          description: New status of the task
+      required:
+        - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+    ValidationError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
